@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
+import * as alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-user-register',
@@ -52,6 +53,9 @@ export class UserRegisterComponent implements OnInit {
       this.userService.addUser(this.userData());
       this.registrationForm.reset();
       this.userSubmitted = false;
+      alertify.success('Congrats, you are successfully registered');
+    } else {
+      alertify.error('Kindly provide the required fields');
     }
   }
 
