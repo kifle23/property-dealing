@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -50,6 +51,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
+    ButtonsModule.forRoot(),
   ],
   providers: [HousingService, UserService, AlertifyService, AuthService],
   bootstrap: [AppComponent],

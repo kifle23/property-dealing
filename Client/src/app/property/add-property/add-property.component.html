@@ -6,7 +6,75 @@
         <tabset #tabSet>
           <tab heading="Basic Info">
             <div class="form-group col-12 m-2">
-              <label for="name">Name</label>
+              <p>I want to</p>
+              <div class="btn-group" btnRadioGroup formControlName="SellRent">
+                <label
+                  class="btn btn-outline-primary me-2"
+                  btnRadio="1"
+                  tabindex="0"
+                  role="button"
+                  name="SellRent"
+                  >Sell</label
+                >
+                <label
+                  class="btn btn-outline-primary"
+                  btnRadio="2"
+                  tabindex="0"
+                  role="button"
+                  name="SellRent"
+                  >Rent</label
+                >
+              </div>
+            </div>
+            <div class="form-group col-12 m-2">
+              <p>BHK</p>
+              <div class="btn-group" btnRadioGroup name="BHK">
+                <label
+                  *ngFor="let bhk of [1, 2, 3, 4]"
+                  class="btn btn-outline-primary me-2"
+                  [btnRadio]="bhk"
+                  tabindex="0"
+                  role="button"
+                  name="BHK"
+                >
+                  {{ bhk }}
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group col-12 m-2">
+              <p>Property Type</p>
+              <div class="btn-group" btnRadioGroup>
+                <label
+                  *ngFor="let ptype of propertyTypes"
+                  class="btn btn-outline-primary me-2"
+                  [btnRadio]="ptype"
+                  tabindex="0"
+                  role="button"
+                  name="PropType"
+                  >{{ ptype }}
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group col-12 m-2">
+              <p>Furnishing Types (Changed)</p>
+              <div class="btn-group" btnRadioGroup>
+                <label
+                  *ngFor="let ftype of furnishTypes"
+                  class="btn btn-outline-primary me-2"
+                  [btnRadio]="ftype"
+                  tabindex="0"
+                  role="button"
+                  name="FurnishType"
+                >
+                  {{ ftype }}
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group col-12 m-2">
+              <label for="name">in Building/Society/Project</label>
               <input
                 type="text"
                 class="form-control"
@@ -35,12 +103,8 @@
               </span>
             </div>
             <div class="form-group col-12 m-2">
-              <label for="type">Type</label>
-              <input type="text" class="form-control" ngModel name="Type" />
-            </div>
-            <div class="form-group col-12 m-2">
-              <label for="price">Price</label>
-              <input type="text" class="form-control" ngModel name="Price" />
+              <label for="city">City</label>
+              <input type="text" class="form-control" />
             </div>
             <div class="d-grid m-2">
               <button
@@ -133,12 +197,18 @@
           </tab>
           <tab heading="Other Details">
             <div class="form-group col-12 m-2">
-              <label>Ready to Move</label><br />
-              <input type="radio" id="Yes" value="1" name="RTM" />
-              <label class="m-2">Yes</label>
+              <p>Ready to Move</p>
+              <div class="btn-group" btnRadioGroup>
+                <label class="btn btn-outline-primary me-2"
+                  btnRadio=true tabindex="0" role="button"
+                  name="RTM">Yes
+                </label>
 
-              <input type="radio" id="No" value="2" name="RTM" />
-              <label class="m-2">No</label>
+                <label class="btn btn-outline-primary"
+                  btnRadio=false  tabindex="0" role="button"
+                  name="RTM">No
+                </label>
+              </div>
             </div>
 
             <div class="form-group col-3 m-2">
@@ -152,13 +222,28 @@
             </div>
 
             <div class="form-group col-12 m-2">
-              <label>Gated Community</label>
-              <input type="text" class="form-control" />
+              <p>Gated Community</p>
+              <div class="btn-group"
+              btnRadioGroup>
+                <label class="btn btn-outline-primary me-2"
+                btnRadio=true tabindex="0" role="button" name="Gated">Yes</label>
+                <label class="btn btn-outline-primary"
+                btnRadio=false  tabindex="0" role="button" name="Gated">No</label>
+              </div>
             </div>
 
             <div class="form-group col-12 m-2">
-              <label>Main Entrance</label>
-              <input type="text" class="form-control" />
+              <p>Main Entrance</p>
+              <div class="btn-group" btnRadioGroup>
+                <label class="btn btn-outline-primary me-2"
+                btnRadio=East tabindex="0" role="button" name="Entrance">East</label>
+                <label class="btn btn-outline-primary"
+                btnRadio=West  tabindex="0" role="button" name="Entrance">West</label>
+                <label class="btn btn-outline-primary"
+                btnRadio=South  tabindex="0" role="button" name="Entrance">South</label>
+                <label class="btn btn-outline-primary"
+                btnRadio=North  tabindex="0" role="button" name="Entrance">North</label>
+              </div>
             </div>
 
             <div class="form-group col-12 m-2">
