@@ -4,3 +4,29 @@
 .error-block{
     color: red;
 }
+
+.btn-group > label[ng-reflect-btn-radio] {
+    border-radius: 44px;
+    padding: 0 15px;
+    line-height: 30px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0096FF;
+  }
+  
