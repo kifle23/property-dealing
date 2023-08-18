@@ -31,6 +31,12 @@
                       >Rent</label
                     >
                   </div>
+                  <div
+                    class="error-block"
+                    *ngIf="SellRent.invalid && nextClicked"
+                  >
+                    Please select if you want to sell or rent
+                  </div>
                 </div>
                 <div class="form-group col-12 m-2">
                   <p>BHK</p>
@@ -39,7 +45,7 @@
                     btnRadioGroup
                     name="BHK"
                     [(ngModel)]="propertyView.BHK"
-                    [ngModelOptions]="{standalone: true}"
+                    [ngModelOptions]="{ standalone: true }"
                   >
                     <label
                       *ngFor="let bhk of [1, 2, 3, 4]"
@@ -61,7 +67,7 @@
                     btnRadioGroup
                     name="PType"
                     [(ngModel)]="propertyView.PType"
-                    [ngModelOptions]="{standalone: true}"
+                    [ngModelOptions]="{ standalone: true }"
                   >
                     <label
                       *ngFor="let ptype of propertyTypes"
@@ -82,7 +88,7 @@
                     btnRadioGroup
                     name="FType"
                     [(ngModel)]="propertyView.FType"
-                    [ngModelOptions]="{standalone: true}"
+                    [ngModelOptions]="{ standalone: true }"
                   >
                     <label
                       *ngFor="let ftype of furnishTypes"
@@ -99,8 +105,12 @@
 
                 <div class="form-group col-12 m-2">
                   <label for="name">in Building/Society/Project</label>
-                  <input type="text" class="form-control" #propName
-                  formControlName="Name">
+                  <input
+                    type="text"
+                    class="form-control"
+                    #propName
+                    formControlName="Name"
+                  />
 
                   <!-- <div class="error-block">
                     Please select building, society or project name
@@ -113,14 +123,14 @@
                     class="form-control"
                     name="City"
                     [(ngModel)]="propertyView.City"
-                    [ngModelOptions]="{standalone: true}"
+                    [ngModelOptions]="{ standalone: true }"
                   />
                 </div>
                 <div class="d-grid m-2">
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(1)"
+                    (click)="selectTab(1, BasicInfo.valid)"
                   >
                     Next
                   </button>
@@ -134,6 +144,12 @@
                     class="form-control"
                     formControlName="Price"
                   />
+                  <div
+                    class="error-block"
+                    *ngIf="Price.invalid && (nextClicked || Price.touched)"
+                  >
+                    Please select the price
+                  </div>
                 </div>
 
                 <div class="form-group col-12 m-2">
@@ -163,20 +179,20 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(2)"
+                    (click)="selectTab(2, PriceInfo.valid)"
                   >
                     Next
                   </button>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(0)"
+                    (click)="selectTab(0, PriceInfo.valid)"
                   >
                     Back
                   </button>
                 </div>
               </tab>
-              <tab heading="Address">
+              <tab heading="Address" formGroupName="AddressInfo">
                 <div class="form-group col-12 m-2">
                   <label>Floor</label>
                   <input type="text" class="form-control" />
@@ -200,20 +216,20 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(3)"
+                    (click)="selectTab(3, AddressInfo.valid)"
                   >
                     Next
                   </button>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(1)"
+                    (click)="selectTab(1, AddressInfo.valid)"
                   >
                     Back
                   </button>
                 </div>
               </tab>
-              <tab heading="Other Details">
+              <tab heading="Other Details" formGroupName="OtherInfo">
                 <div class="form-group col-12 m-2">
                   <p>Ready to Move</p>
                   <div class="btn-group" btnRadioGroup>
@@ -328,14 +344,14 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(4)"
+                    (click)="selectTab(4, OtherInfo.valid)"
                   >
                     Next
                   </button>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(2)"
+                    (click)="selectTab(2, OtherInfo.valid)"
                   >
                     Back
                   </button>
@@ -352,7 +368,7 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(3)"
+                    (click)="selectTab(3, true)"
                   >
                     Back
                   </button>
