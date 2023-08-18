@@ -3,18 +3,16 @@
     <div class="card">
       <div class="card-header"><h3>List your Property</h3></div>
       <div class="card-body">
-        <form (ngSubmit)="onSubmit()" #Form="ngForm">
+        <form (ngSubmit)="onSubmit()" [formGroup]="addPropertyForm">
           <div class="tab-panel">
             <tabset #tabSet class="member-tabset">
-              <tab heading="Basic Info" ngModelGroup="BasicInfo" #BasicInfo="ngModelGroup">
+              <tab heading="Basic Info" formGroupName="BasicInfo">
                 <div class="form-group col-12 m-2">
                   <p>I want to</p>
                   <div
                     class="btn-group"
                     btnRadioGroup
-                    name="SellRent"
-                    ngModel
-                    required
+                    formControlName="SellRent"
                   >
                     <label
                       class="btn btn-outline-primary me-2"
@@ -33,6 +31,12 @@
                       >Rent</label
                     >
                   </div>
+                  <div
+                    class="error-block"
+                    *ngIf="SellRent.invalid && nextClicked"
+                  >
+                    Please select if you want to sell or rent
+                  </div>
                 </div>
                 <div class="form-group col-12 m-2">
                   <p>BHK</p>
@@ -41,6 +45,7 @@
                     btnRadioGroup
                     name="BHK"
                     [(ngModel)]="propertyView.BHK"
+                    [ngModelOptions]="{ standalone: true }"
                   >
                     <label
                       *ngFor="let bhk of [1, 2, 3, 4]"
@@ -62,6 +67,7 @@
                     btnRadioGroup
                     name="PType"
                     [(ngModel)]="propertyView.PType"
+                    [ngModelOptions]="{ standalone: true }"
                   >
                     <label
                       *ngFor="let ptype of propertyTypes"
@@ -80,8 +86,9 @@
                   <div
                     class="btn-group"
                     btnRadioGroup
-                    [(ngModel)]="propertyView.FType"
                     name="FType"
+                    [(ngModel)]="propertyView.FType"
+                    [ngModelOptions]="{ standalone: true }"
                   >
                     <label
                       *ngFor="let ftype of furnishTypes"
@@ -101,34 +108,13 @@
                   <input
                     type="text"
                     class="form-control"
-                    #propName="ngModel"
-                    ngModel
-                    name="Name"
-                    required
-                    minlength="5"
-                    [(ngModel)]="propertyView.Name"
+                    #propName
+                    formControlName="Name"
                   />
-                  <span
-                    *ngIf="!propName.valid && propName.touched"
-                    class="error-block"
-                  >
-                    <span
-                      *ngIf="
-                        propName &&
-                        propName.errors &&
-                        propName.errors['required']
-                      "
-                      >Please provide a name</span
-                    >
-                    <span
-                      *ngIf="
-                        propName &&
-                        propName.errors &&
-                        propName.errors['minlength']
-                      "
-                      >Name must be at least five characters</span
-                    >
-                  </span>
+
+                  <!-- <div class="error-block">
+                    Please select building, society or project name
+                  </div> -->
                 </div>
                 <div class="form-group col-12 m-2">
                   <label for="city">City</label>
@@ -137,28 +123,33 @@
                     class="form-control"
                     name="City"
                     [(ngModel)]="propertyView.City"
+                    [ngModelOptions]="{ standalone: true }"
                   />
                 </div>
                 <div class="d-grid m-2">
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(1)"
-                    [disabled]="!BasicInfo.valid"
+                    (click)="selectTab(1, BasicInfo.valid)"
                   >
                     Next
                   </button>
                 </div>
               </tab>
-              <tab heading="Pricing and Area">
+              <tab heading="Pricing and Area" formGroupName="PriceInfo">
                 <div class="form-group col-12 m-2">
                   <label>Price (in USD)</label>
                   <input
                     type="text"
                     class="form-control"
-                    name="price"
-                    [(ngModel)]="propertyView.Price"
+                    formControlName="Price"
                   />
+                  <div
+                    class="error-block"
+                    *ngIf="Price.invalid && (nextClicked || Price.touched)"
+                  >
+                    Please select the price
+                  </div>
                 </div>
 
                 <div class="form-group col-12 m-2">
@@ -176,8 +167,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    name="BuiltArea"
-                    [(ngModel)]="propertyView.BuiltArea"
+                    formControlName="BuiltArea"
                   />
                 </div>
 
@@ -189,20 +179,20 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(2)"
+                    (click)="selectTab(2, PriceInfo.valid)"
                   >
                     Next
                   </button>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(0)"
+                    (click)="selectTab(0, PriceInfo.valid)"
                   >
                     Back
                   </button>
                 </div>
               </tab>
-              <tab heading="Address">
+              <tab heading="Address" formGroupName="AddressInfo">
                 <div class="form-group col-12 m-2">
                   <label>Floor</label>
                   <input type="text" class="form-control" />
@@ -226,20 +216,20 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(3)"
+                    (click)="selectTab(3, AddressInfo.valid)"
                   >
                     Next
                   </button>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(1)"
+                    (click)="selectTab(1, AddressInfo.valid)"
                   >
                     Back
                   </button>
                 </div>
               </tab>
-              <tab heading="Other Details">
+              <tab heading="Other Details" formGroupName="OtherInfo">
                 <div class="form-group col-12 m-2">
                   <p>Ready to Move</p>
                   <div class="btn-group" btnRadioGroup>
@@ -354,14 +344,14 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(4)"
+                    (click)="selectTab(4, OtherInfo.valid)"
                   >
                     Next
                   </button>
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(2)"
+                    (click)="selectTab(2, OtherInfo.valid)"
                   >
                     Back
                   </button>
@@ -378,7 +368,7 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    (click)="selectTab(3)"
+                    (click)="selectTab(3, true)"
                   >
                     Back
                   </button>
