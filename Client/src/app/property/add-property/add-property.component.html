@@ -6,7 +6,7 @@
         <form (ngSubmit)="onSubmit()" [formGroup]="addPropertyForm">
           <div class="tab-panel">
             <tabset #tabSet class="member-tabset">
-              <tab heading="Basic Info">
+              <tab heading="Basic Info" formGroupName="BasicInfo">
                 <div class="form-group col-12 m-2">
                   <p>I want to</p>
                   <div
@@ -126,7 +126,7 @@
                   </button>
                 </div>
               </tab>
-              <tab heading="Pricing and Area">
+              <tab heading="Pricing and Area" formGroupName="PriceInfo">
                 <div class="form-group col-12 m-2">
                   <label>Price (in USD)</label>
                   <input
