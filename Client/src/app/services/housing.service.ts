@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { Ipropertybase } from '../model/ipropertybase';
 import { Property } from '../model/property';
+import { Iproperty } from '../model/iproperty';
 
 interface PropertyData {
   [key: string]: any;
@@ -15,29 +16,38 @@ interface PropertyData {
 export class HousingService {
   constructor(private http: HttpClient) {}
 
-  getAllProperties(SellRent: number): Observable<Ipropertybase[]> {
-    return this.http.get<PropertyData>('data/properties.json').pipe(
-      map((data) => {
-        const propertiesArray: Array<Ipropertybase> = [];
+  
+  getAllProperties(SellRent?: number): Observable<Ipropertybase[]> {
+    return this.http.get('data/properties.json').pipe(
+      map(data => {
+      const propertiesArray: Array<Ipropertybase> = [];
         const localProperties = JSON.parse(
           localStorage.getItem('newProp') as string
         );
-        if (localProperties) {
-          for (const id in localProperties) {
-            if (
-              localProperties.hasOwnProperty(id) &&
-              localProperties[id].SellRent === SellRent
-            ) {
-              propertiesArray.push(localProperties[id]);
-            }
+
+      if (localProperties) {
+        for (const id in localProperties) {
+          if (SellRent) {
+          if (localProperties.hasOwnProperty(id) && localProperties[id].SellRent === SellRent) {
+            propertiesArray.push(localProperties[id]);
           }
+        } else {
+          propertiesArray.push(localProperties[id]);
         }
-        for (const id in data) {
-          if (data.hasOwnProperty(id) && data[id].SellRent === SellRent) {
-            propertiesArray.push(data[id]);
+        }
+      }
+
+      for (const [id, property] of Object.entries(data)) {
+        if (SellRent) {
+          if (property.SellRent === SellRent) {
+            propertiesArray.push(property);
           }
+        } else {
+          propertiesArray.push(property);
         }
-        return propertiesArray;
+      }
+      
+      return propertiesArray;
       })
     );
   }
@@ -65,5 +75,13 @@ export class HousingService {
       localStorage.setItem('PID', '101');
       return 101;
     }
+  }
+
+  getProperty(id: number) {
+    return this.getAllProperties().pipe(
+      map((propertiesArray) => {
+        return propertiesArray.find((p) => p.Id === id);
+      })
+    );
   }
 }
