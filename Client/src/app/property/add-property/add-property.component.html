@@ -138,17 +138,18 @@
               </tab>
               <tab heading="Pricing and Area" formGroupName="PriceInfo">
                 <div class="form-group col-12 m-2">
-                  <label>Price (in USD)</label>
+                  <label *ngIf="SellRent.value==1">Price (in USD)</label>
+                  <label *ngIf="SellRent.value==2">Rent (in USD)</label>
                   <input
                     type="text"
                     class="form-control"
                     formControlName="Price"
                   />
-                  <div
-                    class="error-block"
-                    *ngIf="Price.invalid && (nextClicked || Price.touched)"
-                  >
-                    Please select the price
+                  <div class="error-block"
+                  *ngIf="Price.invalid && (nextClicked || Price.touched)">
+                    Please select
+                    <span *ngIf="SellRent.value==1;else ShowRent">price</span>
+                    <ng-template #ShowRent>rent</ng-template>
                   </div>
                 </div>
 
@@ -232,41 +233,42 @@
               <tab heading="Other Details" formGroupName="OtherInfo">
                 <div class="form-group col-12 m-2">
                   <p>Ready to Move</p>
-                  <div class="btn-group" btnRadioGroup>
-                    <label
-                      class="btn btn-outline-primary me-2"
-                      btnRadio="true"
-                      tabindex="0"
-                      role="button"
-                      name="RTM"
-                      >Yes
+                  <div class="btn-group" btnRadioGroup
+                  formControlName="RTM">
+                    <label class="btn btn-outline-primary me-2"
+                      btnRadio=true tabindex="0" role="button"
+                      (click)="propertyView.RTM=true"
+                      name="RTM">Yes
                     </label>
 
-                    <label
-                      class="btn btn-outline-primary"
-                      btnRadio="false"
-                      tabindex="0"
-                      role="button"
-                      name="RTM"
-                      >No
+                    <label class="btn btn-outline-primary"
+                      btnRadio=false  tabindex="0" role="button"
+                      (click)="propertyView.RTM=false"
+                      name="RTM">No
                     </label>
+                  </div>
+                  <div class="error-block" *ngIf="RTM.invalid && nextClicked">
+                    Please select ready to move
                   </div>
                 </div>
 
-                <div class="form-group col-3 m-2">
-                  <label>Possession/Avaialble From</label>
-                  <input
-                    type="text"
-                    placeholder="Datepicker"
-                    class="form-control"
-                    bsDatepicker
-                    [bsConfig]="{
-                      containerClass: 'theme-dark-blue',
-                      dateInputFormat: 'MMM DD, YYYY'
-                    }"
-                  />
+                <div class="form-group col-6 m-2">
+                  <label *ngIf="propertyView.RTM">Establishment Date</label>
+                  <label *ngIf="!propertyView.RTM">Possession Date</label>
+                  <input type="text"
+                  class="form-control"
+                  formControlName="PossessionOn"
+                  #possessionOn
+                  (bsValueChange)="possessionOn.value"
+                  bsDatepicker
+                  [bsConfig]="{containerClass: 'theme-dark-blue',
+                  dateInputFormat: 'MMM DD, YYYY'}">
+                  <div class="error-block" *ngIf="PossessionOn.invalid
+                    && (nextClicked || PossessionOn.touched)">
+                    Please select establishment/possession date
+                  </div>
                 </div>
-
+                
                 <div class="form-group col-12 m-2">
                   <label>Age of Property</label>
                   <input type="text" class="form-control" />

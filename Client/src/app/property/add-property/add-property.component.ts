@@ -50,11 +50,11 @@ export class AddPropertyComponent implements OnInit {
     this.addPropertyForm = this.fb.group({
       BasicInfo: this.fb.group({
         SellRent: ['1' , Validators.required],
-        BHK: [null, Validators.required],
-        PType: [null, Validators.required],
-        FType: [null, Validators.required],
+        // BHK: [null, Validators.required],
+        // PType: [null, Validators.required],
+        // FType: [null, Validators.required],
         Name: [null, Validators.required],
-        City: [null, Validators.required]
+        // City: [null, Validators.required]
     }),
 
     PriceInfo: this.fb.group({
@@ -209,6 +209,8 @@ export class AddPropertyComponent implements OnInit {
   }
 
   selectTab(tabId: number, IsCurrentTabValid: boolean) {
+    console.log(tabId, IsCurrentTabValid);
+    console.log(this.addPropertyForm);
     this.nextClicked = true;
     if (IsCurrentTabValid) {
       this.tabSet.tabs[tabId].active = true;
