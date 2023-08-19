@@ -19,6 +19,19 @@ export class HousingService {
     return this.http.get<PropertyData>('data/properties.json').pipe(
       map((data) => {
         const propertiesArray: Array<Ipropertybase> = [];
+        const localProperties = JSON.parse(
+          localStorage.getItem('newProp') as string
+        );
+        if (localProperties) {
+          for (const id in localProperties) {
+            if (
+              localProperties.hasOwnProperty(id) &&
+              localProperties[id].SellRent === SellRent
+            ) {
+              propertiesArray.push(localProperties[id]);
+            }
+          }
+        }
         for (const id in data) {
           if (data.hasOwnProperty(id) && data[id].SellRent === SellRent) {
             propertiesArray.push(data[id]);
@@ -30,7 +43,15 @@ export class HousingService {
   }
 
   addProperty(property: Property) {
-    localStorage.setItem('newProp', JSON.stringify(property));
+    let newProp = [property];
+
+    if (localStorage.getItem('newProp')) {
+      newProp = [
+        property,
+        ...JSON.parse(localStorage.getItem('newProp') as string),
+      ];
+    }
+    localStorage.setItem('newProp', JSON.stringify(newProp));
   }
 
   newPropID() {
