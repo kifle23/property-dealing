@@ -6,34 +6,52 @@ import { Ipropertybase } from 'src/app/model/ipropertybase';
 @Component({
   selector: 'app-property-list',
   templateUrl: './property-list.component.html',
-  styleUrls: ['./property-list.component.css']
+  styleUrls: ['./property-list.component.css'],
 })
 export class PropertyListComponent implements OnInit {
   SellRent = 1;
+  properties!: Ipropertybase[];
+  Today = new Date();
+  City = '';
+  SearchCity = '';
+  SortbyParam = '';
+  SortDirection = 'asc';
 
-  properties: Array<Ipropertybase>= [];
-  
-  constructor(private route: ActivatedRoute, private housingService: HousingService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private housingService: HousingService
+  ) {}
 
-  ngOnInit() {
-    if(this.route.snapshot.url.toString()){
-      this.SellRent=2;
+  ngOnInit(): void {
+    if (this.route.snapshot.url.toString()) {
+      this.SellRent = 2;
     }
     this.housingService.getAllProperties(this.SellRent).subscribe(
-      data => {
+      (data) => {
         this.properties = data;
-
-        const storedValue = localStorage.getItem('newProp');
-        const newProperty = storedValue !== null ? JSON.parse(storedValue) : null;
-
-        if (newProperty.SellRent === this.SellRent) {
-          this.properties = [newProperty, ...this.properties];
-        }
-
-      }, error => {
+        console.log(data);
+      },
+      (error) => {
+        console.log('httperror:');
         console.log(error);
       }
     );
   }
 
+  onCityFilter() {
+    this.SearchCity = this.City;
+  }
+
+  onCityFilterClear() {
+    this.SearchCity = '';
+    this.City = '';
+  }
+
+  onSortDirection() {
+    if (this.SortDirection === 'desc') {
+      this.SortDirection = 'asc';
+    } else {
+      this.SortDirection = 'desc';
+    }
+  }
 }
