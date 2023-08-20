@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/property-dealing",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
