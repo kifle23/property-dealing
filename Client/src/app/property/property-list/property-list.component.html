@@ -1,6 +1,6 @@
 <div class="row">
   <div
-    *ngFor="let property of properties"
+    *ngFor="let property of properties | filter:'': 'City' | sort:['Price','asc']"
     class="shadow p-3 mb-5 bg-white rounded col-md-4">
     <app-property-card [property]="property"></app-property-card>
   </div>
