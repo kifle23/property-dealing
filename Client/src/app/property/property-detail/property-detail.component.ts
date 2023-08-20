@@ -20,13 +20,11 @@ constructor(private route: ActivatedRoute,
 ngOnInit() {
   this.propertyId = +this.route.snapshot.params['id'];
 
-  this.route.params.subscribe((params) => {
-    this.propertyId = +params['id'];
-    this.housingService.getProperty(this.propertyId).subscribe((data: Ipropertybase | undefined) => {
-      if (data) {
-        this.property = data as Property;
-      }
-    });
+  this.route.data.subscribe((data: any) => {
+    const resolvedData = data['prp'];
+    if (resolvedData) {
+      this.property = resolvedData as Property;
+    }
   });
 }
 }

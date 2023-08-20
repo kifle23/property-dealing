@@ -17,10 +17,10 @@ export class HousingService {
   constructor(private http: HttpClient) {}
 
   
-  getAllProperties(SellRent?: number): Observable<Ipropertybase[]> {
+  getAllProperties(SellRent?: number): Observable<Property[]> {
     return this.http.get('data/properties.json').pipe(
       map(data => {
-      const propertiesArray: Array<Ipropertybase> = [];
+      const propertiesArray: Array<Property> = [];
         const localProperties = JSON.parse(
           localStorage.getItem('newProp') as string
         );
@@ -46,7 +46,7 @@ export class HousingService {
           propertiesArray.push(property);
         }
       }
-      
+
       return propertiesArray;
       })
     );
