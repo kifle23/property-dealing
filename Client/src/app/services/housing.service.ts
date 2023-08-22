@@ -16,38 +16,44 @@ interface PropertyData {
 export class HousingService {
   constructor(private http: HttpClient) {}
 
-  
+  getAllCities(): Observable<string[]> {
+    return this.http.get<string[]>('http://localhost:5071/api/city');
+  }
+
   getAllProperties(SellRent?: number): Observable<Property[]> {
     return this.http.get('data/properties.json').pipe(
-      map(data => {
-      const propertiesArray: Array<Property> = [];
+      map((data) => {
+        const propertiesArray: Array<Property> = [];
         const localProperties = JSON.parse(
           localStorage.getItem('newProp') as string
         );
 
-      if (localProperties) {
-        for (const id in localProperties) {
-          if (SellRent) {
-          if (localProperties.hasOwnProperty(id) && localProperties[id].SellRent === SellRent) {
-            propertiesArray.push(localProperties[id]);
+        if (localProperties) {
+          for (const id in localProperties) {
+            if (SellRent) {
+              if (
+                localProperties.hasOwnProperty(id) &&
+                localProperties[id].SellRent === SellRent
+              ) {
+                propertiesArray.push(localProperties[id]);
+              }
+            } else {
+              propertiesArray.push(localProperties[id]);
+            }
           }
-        } else {
-          propertiesArray.push(localProperties[id]);
         }
-        }
-      }
 
-      for (const [id, property] of Object.entries(data)) {
-        if (SellRent) {
-          if (property.SellRent === SellRent) {
+        for (const [id, property] of Object.entries(data)) {
+          if (SellRent) {
+            if (property.SellRent === SellRent) {
+              propertiesArray.push(property);
+            }
+          } else {
             propertiesArray.push(property);
           }
-        } else {
-          propertiesArray.push(property);
         }
-      }
 
-      return propertiesArray;
+        return propertiesArray;
       })
     );
   }
