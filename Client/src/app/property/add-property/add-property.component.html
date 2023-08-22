@@ -134,10 +134,10 @@
                     [(ngModel)]="propertyView.City"
                   >
                     <option value="">--Select--</option>
-                    <option *ngFor="let city of cityList" [value]="city">
-                      {{ city }}
+                    <option *ngFor="let city of cityList" [value]="city.id">
+                      {{ city.name }}
                     </option>
-                </select>
+                  </select>
                   <div
                     class="error-block"
                     *ngIf="City.invalid && (nextClicked || City.touched)"
