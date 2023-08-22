@@ -128,12 +128,16 @@
                 </div>
                 <div class="form-group col-12 m-2">
                   <label for="city">City</label>
-                  <input
-                    type="text"
+                  <select
                     class="form-control"
                     formControlName="City"
                     [(ngModel)]="propertyView.City"
-                  />
+                  >
+                    <option value="">--Select--</option>
+                    <option *ngFor="let city of cityList" [value]="city">
+                      {{ city }}
+                    </option>
+                </select>
                   <div
                     class="error-block"
                     *ngIf="City.invalid && (nextClicked || City.touched)"
