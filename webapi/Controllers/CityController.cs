@@ -41,13 +41,27 @@ namespace webapi.Controllers
             return Ok(city);
         }
 
-    
+        // POST api/city/post
         [HttpPost("post")]
         public async Task<IActionResult> AddCity(City city)
         {
             await context.Cities.AddAsync(city);
             await context.SaveChangesAsync();
             return Ok(city);
+        }
+
+        // DELETE api/city/delete/1
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteCity(int id)
+        {
+            var city = await context.Cities.FindAsync(id);
+            if (city != null)
+            {
+                context.Cities.Remove(city);
+                await context.SaveChangesAsync();
+                return Ok(id);
+            }
+            return NotFound();
         }
     }
 }
