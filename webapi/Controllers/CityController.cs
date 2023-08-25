@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
+using webapi.Models;
 //using webapi.Models;
 
 namespace webapi.Controllers
@@ -19,11 +20,23 @@ namespace webapi.Controllers
             this.context = context;
         }
 
-        [HttpGet("")]
-        public async Task<IActionResult> GetTModels()
+        // GET api/city
+        [HttpGet]
+        public async Task<IActionResult> GetCities()
         {
             var cities = await context.Cities.ToListAsync();
             return Ok(cities);
+        }
+
+        // POST api/city/add?cityName=cityName
+        [HttpPost("add")]
+        public async Task<IActionResult> AddCity(string cityName)
+        {
+            var city = new City();
+            city.Name = cityName;
+            await context.Cities.AddAsync(city);
+            await context.SaveChangesAsync();
+            return Ok(city);
         }
     }
 }
