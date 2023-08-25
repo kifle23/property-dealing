@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
+using webapi.Data.Repo;
 using webapi.Models;
-//using webapi.Models;
 
 namespace webapi.Controllers
 {
@@ -14,54 +14,36 @@ namespace webapi.Controllers
     [ApiController]
     public class CityController : ControllerBase
     {
-        private readonly DBContext context;
-        public CityController(DBContext context)
+        private readonly ICityRepository cityRepository;
+        public CityController(ICityRepository cityRepository)
         {
-            this.context = context;
+            this.cityRepository = cityRepository;
         }
 
         // GET api/city
         [HttpGet]
         public async Task<IActionResult> GetCities()
         {
-            var cities = await context.Cities.ToListAsync();
+            var cities = await cityRepository.GetCitiesAsync();
             return Ok(cities);
-        }
-
-        // POST api/city/add?cityName=cityName
-        // POST api/city/add/cityName
-        [HttpPost("add")]
-        [HttpPost("add/{cityName}")]
-        public async Task<IActionResult> AddCity(string cityName)
-        {
-            var city = new City();
-            city.Name = cityName;
-            await context.Cities.AddAsync(city);
-            await context.SaveChangesAsync();
-            return Ok(city);
         }
 
         // POST api/city/post
         [HttpPost("post")]
         public async Task<IActionResult> AddCity(City city)
         {
-            await context.Cities.AddAsync(city);
-            await context.SaveChangesAsync();
-            return Ok(city);
+            await cityRepository.AddCityAsync(city);
+            await cityRepository.SaveAsync();
+            return StatusCode(201);
         }
 
         // DELETE api/city/delete/1
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCity(int id)
         {
-            var city = await context.Cities.FindAsync(id);
-            if (city != null)
-            {
-                context.Cities.Remove(city);
-                await context.SaveChangesAsync();
-                return Ok(id);
-            }
-            return NotFound();
+            await cityRepository.DeleteCityAsync(id);
+            await cityRepository.SaveAsync();
+            return Ok(id);
         }
     }
 }
