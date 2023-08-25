@@ -29,11 +29,22 @@ namespace webapi.Controllers
         }
 
         // POST api/city/add?cityName=cityName
+        // POST api/city/add/cityName
         [HttpPost("add")]
+        [HttpPost("add/{cityName}")]
         public async Task<IActionResult> AddCity(string cityName)
         {
             var city = new City();
             city.Name = cityName;
+            await context.Cities.AddAsync(city);
+            await context.SaveChangesAsync();
+            return Ok(city);
+        }
+
+    
+        [HttpPost("post")]
+        public async Task<IActionResult> AddCity(City city)
+        {
             await context.Cities.AddAsync(city);
             await context.SaveChangesAsync();
             return Ok(city);
