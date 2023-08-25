@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
-using webapi.Data.Repo;
+using webapi.Interfaces;
 using webapi.Models;
 
 namespace webapi.Controllers
@@ -32,7 +32,7 @@ namespace webapi.Controllers
         [HttpPost("post")]
         public async Task<IActionResult> AddCity(City city)
         {
-            await cityRepository.AddCityAsync(city);
+            cityRepository.AddCityAsync(city);
             await cityRepository.SaveAsync();
             return StatusCode(201);
         }
@@ -41,7 +41,7 @@ namespace webapi.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCity(int id)
         {
-            await cityRepository.DeleteCityAsync(id);
+            cityRepository.DeleteCityAsync(id);
             await cityRepository.SaveAsync();
             return Ok(id);
         }

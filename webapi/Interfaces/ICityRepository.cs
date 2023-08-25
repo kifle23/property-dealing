@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using webapi.Models;
 
-namespace webapi.Data.Repo
+namespace webapi.Interfaces
 {
     public interface ICityRepository
     {
         Task<IEnumerable<City>> GetCitiesAsync();
-        Task<City> AddCityAsync(City city);
-        Task<City> DeleteCityAsync(int id);
+        void AddCityAsync(City city);
+        void DeleteCityAsync(int id);
         Task<bool> SaveAsync();
 
     }
