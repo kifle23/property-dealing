@@ -14,17 +14,17 @@ namespace webapi.Controllers
     [ApiController]
     public class CityController : ControllerBase
     {
-        private readonly ICityRepository cityRepository;
-        public CityController(ICityRepository cityRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public CityController(IUnitOfWork _unitOfWork)
         {
-            this.cityRepository = cityRepository;
+            this._unitOfWork = _unitOfWork;
         }
 
         // GET api/city
         [HttpGet]
         public async Task<IActionResult> GetCities()
         {
-            var cities = await cityRepository.GetCitiesAsync();
+            var cities = await _unitOfWork.CityRepository.GetCitiesAsync();
             return Ok(cities);
         }
 
@@ -32,8 +32,8 @@ namespace webapi.Controllers
         [HttpPost("post")]
         public async Task<IActionResult> AddCity(City city)
         {
-            cityRepository.AddCityAsync(city);
-            await cityRepository.SaveAsync();
+            _unitOfWork.CityRepository.AddCityAsync(city);
+            await _unitOfWork.SaveAsync();
             return StatusCode(201);
         }
 
@@ -41,8 +41,8 @@ namespace webapi.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCity(int id)
         {
-            cityRepository.DeleteCityAsync(id);
-            await cityRepository.SaveAsync();
+            _unitOfWork.CityRepository.DeleteCityAsync(id);
+            await _unitOfWork.SaveAsync();
             return Ok(id);
         }
     }
