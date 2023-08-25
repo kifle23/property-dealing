@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
-using webapi.Data.Repo;
+using webapi.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddCors(options =>
 {

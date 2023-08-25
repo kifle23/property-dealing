@@ -34,10 +34,5 @@ namespace webapi.Data.Repo
         {
             return await context.Cities.ToListAsync();
         }
-
-        public async Task<bool> SaveAsync()
-        {
-            return await context.SaveChangesAsync() > 0;
-        }
     }
 }
