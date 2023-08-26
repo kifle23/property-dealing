@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
+using webapi.Dtos;
 using webapi.Interfaces;
 using webapi.Models;
 
@@ -25,13 +26,26 @@ namespace webapi.Controllers
         public async Task<IActionResult> GetCities()
         {
             var cities = await _unitOfWork.CityRepository.GetCitiesAsync();
-            return Ok(cities);
+
+            var citiesDto = from c in cities
+                            select new CityDto()    
+                            {
+                                Id = c.Id,
+                                Name = c.Name
+                            };
+            return Ok(citiesDto);
         }
 
         // POST api/city/post
         [HttpPost("post")]
-        public async Task<IActionResult> AddCity(City city)
+        public async Task<IActionResult> AddCity(CityDto cityDto)
         {
+            var city = new City
+            {
+                Name = cityDto.Name,
+                LastUpdatedOn = DateTime.Now,
+                LastUpdatedBy = 1
+            };
             _unitOfWork.CityRepository.AddCityAsync(city);
             await _unitOfWork.SaveAsync();
             return StatusCode(201);
