@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
@@ -16,9 +17,12 @@ namespace webapi.Controllers
     public class CityController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CityController(IUnitOfWork _unitOfWork)
+        private readonly IMapper mapper;
+
+        public CityController(IUnitOfWork _unitOfWork, IMapper mapper)
         {
             this._unitOfWork = _unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET api/city
@@ -26,13 +30,8 @@ namespace webapi.Controllers
         public async Task<IActionResult> GetCities()
         {
             var cities = await _unitOfWork.CityRepository.GetCitiesAsync();
+            var citiesDto = mapper.Map<IEnumerable<CityDto>>(cities);
 
-            var citiesDto = from c in cities
-                            select new CityDto()    
-                            {
-                                Id = c.Id,
-                                Name = c.Name
-                            };
             return Ok(citiesDto);
         }
 
@@ -40,12 +39,10 @@ namespace webapi.Controllers
         [HttpPost("post")]
         public async Task<IActionResult> AddCity(CityDto cityDto)
         {
-            var city = new City
-            {
-                Name = cityDto.Name,
-                LastUpdatedOn = DateTime.Now,
-                LastUpdatedBy = 1
-            };
+            var city = mapper.Map<City>(cityDto);
+            city.LastUpdatedOn = DateTime.Now;
+            city.LastUpdatedBy = 1;
+          
             _unitOfWork.CityRepository.AddCityAsync(city);
             await _unitOfWork.SaveAsync();
             return StatusCode(201);
