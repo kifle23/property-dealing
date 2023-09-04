@@ -11,6 +11,7 @@ namespace webapi.Helpers
         public AutomapperProfiles()
         {
             CreateMap<Models.City, Dtos.CityDto>().ReverseMap();
+            CreateMap<Models.City, Dtos.CityUpdateDto>().ReverseMap();
         }
     }
 }
