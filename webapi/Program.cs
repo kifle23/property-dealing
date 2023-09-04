@@ -1,3 +1,5 @@
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.Helpers;
@@ -36,15 +38,31 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowAngularOrigins");
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandler(
+        options => {
+            options.Run(
+                async context => {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    var ex = context.Features.Get<IExceptionHandlerFeature>();
+                    if (ex != null)
+                    {
+                        await context.Response.WriteAsync(ex.Error.Message);
+                    }
+                });
+        }
+    );
+}
+
+app.UseCors("AllowAngularOrigins");
 
 app.UseAuthorization();
 
