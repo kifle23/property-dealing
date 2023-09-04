@@ -19,6 +19,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAutoMapper(typeof(AutomapperProfiles).Assembly);
 
+builder.Services.AddControllers().AddNewtonsoftJson();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularOrigins",
