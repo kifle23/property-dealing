@@ -12,6 +12,6 @@ namespace webapi.Interfaces
         void AddCityAsync(City city);
         void DeleteCityAsync(int id);
 
-        Task<City> FindCity(int id);
+        Task<City?> FindCity(int id);
     }
 }
