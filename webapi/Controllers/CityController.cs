@@ -92,5 +92,23 @@ namespace webapi.Controllers
             await _unitOfWork.SaveAsync();
             return StatusCode(200);
         }
+
+        // PUT api/city/update/1
+        [HttpPut("updateCityName/{id}")]
+        public async Task<IActionResult> UpdateCity(int id, CityUpdateDto cityDto)
+        {
+            var city = await _unitOfWork.CityRepository.FindCity(id);
+            if (city == null)
+            {
+                return NotFound();
+            }
+
+            mapper.Map(cityDto, city);
+            city.LastUpdatedOn = DateTime.Now;
+            city.LastUpdatedBy = 1;
+            await _unitOfWork.SaveAsync();
+            return StatusCode(200);
+        }
+
     }
 }
