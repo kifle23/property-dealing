@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
+using webapi.Extentions;
 using webapi.Helpers;
 using webapi.Interfaces;
+using webapi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +38,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowAngularOrigins");
-
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -45,6 +46,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAngularOrigins");
 
 app.UseAuthorization();
 
