@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
@@ -68,6 +70,23 @@ namespace webapi.Controllers
             }
 
             mapper.Map(cityDto, city);
+            city.LastUpdatedOn = DateTime.Now;
+            city.LastUpdatedBy = 1;
+            await _unitOfWork.SaveAsync();
+            return StatusCode(200);
+        }
+
+        // PUT api/city/update/1
+        [HttpPatch("update/{id}")]
+        public async Task<IActionResult> UpdateCityPatch(int id, JsonPatchDocument<City> cityToPatch)
+        {
+            var city = await _unitOfWork.CityRepository.FindCity(id);
+            if (city == null)
+            {
+                return NotFound();
+            }
+
+            cityToPatch.ApplyTo(city, ModelState);
             city.LastUpdatedOn = DateTime.Now;
             city.LastUpdatedBy = 1;
             await _unitOfWork.SaveAsync();
