@@ -3,6 +3,7 @@ using webapi.Data;
 using webapi.Extentions;
 using webapi.Helpers;
 using webapi.Interfaces;
+using webapi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.ConfigureExceptionHandler(app.Environment);
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
