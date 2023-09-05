@@ -14,9 +14,8 @@ using webapi.Models;
 
 namespace webapi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CityController : ControllerBase
+
+    public class CityController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
