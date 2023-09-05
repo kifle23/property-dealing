@@ -13,9 +13,11 @@ namespace webapi.Data
         public UnitOfWork(DBContext context)
         {
             this.context = context;
-            
+
         }
         public ICityRepository CityRepository => new CityRepository(context);
+
+        public IUserRepository UserRepository => new UserRepository(context);
 
         public async Task<bool> SaveAsync()
         {
