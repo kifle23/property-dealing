@@ -26,7 +26,13 @@ namespace webapi.Controllers
             {
                 return Unauthorized();
             }
-            return Ok(result);
+
+            var loginRes = new LoginResDto
+            {
+                Username = result.Username,
+                Token = "Token to be generated"
+            };
+            return Ok(loginRes);
         }
     }
 }
