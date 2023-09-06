@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -14,8 +15,10 @@ namespace webapi.Controllers
     public class AccountController : BaseController
     {
         public IUnitOfWork UnitOfWork { get; }
-        public AccountController(IUnitOfWork unitOfWork)
+        public IConfiguration Configuration { get; }
+        public AccountController(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
+            this.Configuration = configuration;
             this.UnitOfWork = unitOfWork;
 
         }
@@ -40,7 +43,8 @@ namespace webapi.Controllers
 
         private string GenerateToken(User user)
         {
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("super secret key"));
+            var secretKey = Configuration.GetSection("AppSettings:Token").Value;
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var claims = new Claim[] {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
