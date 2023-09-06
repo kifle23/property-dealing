@@ -39,7 +39,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+var secretKey = builder.Configuration.GetSection("AppSettings:Token").Value;
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
