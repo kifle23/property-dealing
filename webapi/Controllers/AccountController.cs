@@ -51,7 +51,7 @@ namespace webapi.Controllers
                 Issuer = "issuer",
                 Audience = "audience",
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(1),
+                Expires = DateTime.Now.AddMinutes(30),
                 SigningCredentials = signingCredentials
             };
             var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
