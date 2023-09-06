@@ -1,4 +1,7 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using webapi.Data;
 using webapi.Extentions;
 using webapi.Helpers;
@@ -36,6 +39,20 @@ builder.Services.AddCors(options =>
     });
 });
 
+var secretKey = builder.Configuration.GetSection("AppSettings:Token").Value;
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = key,
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
 var app = builder.Build();
 
 app.ConfigureExceptionHandler(app.Environment);
@@ -48,6 +65,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAngularOrigins");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
