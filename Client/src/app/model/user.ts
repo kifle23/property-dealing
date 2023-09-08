@@ -1,5 +1,5 @@
-export interface User {
-  userName: string;
+export interface UserForRegistration {
+  username: string;
   email?: string;
   password: string;
   mobile?: number;
