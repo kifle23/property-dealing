@@ -63,19 +63,5 @@ namespace webapi.Controllers
 
             return tokenHandler.WriteToken(token);
         }
-
-        // POST api/account/register
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(LoginReqDto user)
-        {
-            if (await UnitOfWork.UserRepository.UserExists(user.Username))
-            {
-                return BadRequest("Username already exists");
-            }
-
-            UnitOfWork.UserRepository.Register(user.Username, user.Password);
-            await UnitOfWork.SaveAsync();
-            return StatusCode(201);
-        }
     }
 }
