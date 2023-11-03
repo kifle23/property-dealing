@@ -13,13 +13,12 @@ export class NavBarComponent implements OnInit {
   ngOnInit() {}
 
   loggedIn() {
-    this.loggedinUser = localStorage.getItem('userName');
+    this.loggedinUser = localStorage.getItem('token');
     return this.loggedinUser;
   }
 
   loggedOut() {
     localStorage.removeItem('token');
-    localStorage.removeItem('userName');
     this.alertify.success('Logged Out');
   }
 }
