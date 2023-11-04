@@ -17,7 +17,9 @@ export class HousingService {
   constructor(private http: HttpClient) {}
 
   getAllCities(): Observable<string[]> {
-    return this.http.get<string[]>('http://localhost:5071/api/city');
+    return this.http.get<string[]>(
+      'https://property-dealing-back-end.onrender.com/api/city'
+    );
   }
 
   getAllProperties(SellRent?: number): Observable<Property[]> {
