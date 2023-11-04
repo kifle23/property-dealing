@@ -12,8 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
-builder.Services.AddDbContext<DBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<DBContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddEntityFrameworkNpgsql().AddDbContext<DBContext>(opt =>
+        opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,7 +35,7 @@ builder.Services.AddCors(options =>
     builder =>
     {
         builder.WithOrigins(
-                            "http://localhost:4200"
+                            "https://housing-app-ang.web.app"
                             )
                             .AllowAnyHeader()
                             .AllowAnyMethod();
