@@ -1,7 +1,9 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using webapi.Data;
 using webapi.Extentions;
 using webapi.Helpers;
@@ -15,8 +17,16 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddDbContext<DBContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+string dbPassword = Environment.GetEnvironmentVariable("DBPassword")!;
+
+var conBuilder = new NpgsqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection"))
+{
+    Password = dbPassword
+};
+var connectionString = conBuilder.ConnectionString;
+
 builder.Services.AddEntityFrameworkNpgsql().AddDbContext<DBContext>(opt =>
-        opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+        opt.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -35,7 +45,7 @@ builder.Services.AddCors(options =>
     builder =>
     {
         builder.WithOrigins(
-                            "https://housing-app-ang.web.app"
+                            "http://localhost:4200"
                             )
                             .AllowAnyHeader()
                             .AllowAnyMethod();
