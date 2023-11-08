@@ -14,10 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
-//builder.Services.AddDbContext<DBContext>(options =>
+// builder.Services.AddDbContext<DBContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-string dbPassword = Environment.GetEnvironmentVariable("DBPassword")!;
+string dbPassword = Environment.GetEnvironmentVariable("DBPasswordLocal")!;
 
 var conBuilder = new NpgsqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection"))
 {

@@ -21,5 +21,31 @@ namespace webapi.Data.Repo
             // && x.Password == password
             );
         }
+
+        public void Register(string username, string password)
+        {
+            byte[] passwordHash, passwordKey;
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordKey = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+
+            var user = new User
+            {
+                Username = username,
+                Password = passwordHash,
+                PasswordKey = passwordKey
+            };
+
+            Context.Users.Add(user);
+        }
+
+        public async Task<bool> UserExists(string username)
+        {
+            return await Context.Users.AnyAsync(x => x.Username == username);
+        }
+
     }
 }
