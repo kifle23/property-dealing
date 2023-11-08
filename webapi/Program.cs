@@ -14,10 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
-//builder.Services.AddDbContext<DBContext>(options =>
+// builder.Services.AddDbContext<DBContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-string dbPassword = Environment.GetEnvironmentVariable("DBPassword")!;
+string dbPassword = Environment.GetEnvironmentVariable("DBPasswordLocal")!;
 
 var conBuilder = new NpgsqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection"))
 {
@@ -53,7 +53,7 @@ builder.Services.AddCors(options =>
 });
 
 var secretKey = builder.Configuration.GetSection("AppSettings:Token").Value;
-var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
