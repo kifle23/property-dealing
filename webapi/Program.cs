@@ -53,7 +53,7 @@ builder.Services.AddCors(options =>
 });
 
 var secretKey = builder.Configuration.GetSection("AppSettings:Token").Value;
-var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

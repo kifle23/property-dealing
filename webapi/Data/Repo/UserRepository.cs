@@ -17,7 +17,9 @@ namespace webapi.Data.Repo
         }
         public async Task<User> Authenticate(string username, string password)
         {
-            return await Context.Users.FirstOrDefaultAsync(x => x.Username == username && x.Password == password);
+            return await Context.Users.FirstOrDefaultAsync(x => x.Username == username 
+            // && x.Password == password
+            );
         }
     }
 }
